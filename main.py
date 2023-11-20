@@ -13,12 +13,10 @@ soup = BeautifulSoup(r.text, 'html.parser')
 tags_to_store = {
     "table": ["class"],
     "input": ["class"],
-    "clipboard-copy": [],
     "turbo-frame": ["id"],
     "span": ["data-error-text", "data-success-text"],
     "div": ["class", "role"],
     "query-builder": ["class", "id"],
-    "style": [],
     "label": ["id", "style"],
     "svg": ["class"],
     "meta": ["name"],
@@ -32,7 +30,7 @@ tags_to_store = {
     "nav": ["aria-label"],
     "img": ["class", "alt"],
     "details": ["class"],
-    "a": [],
+    "a": ["aria-label", "href"]
 }
 
 # Dictionary storing tags to replace with new tags
@@ -93,7 +91,9 @@ keep_attributes(tags_to_store)
 replace_tags(tags_to_replace, soup)
 remove_tags(tags_to_remove, soup)
 
-# Replace all ending tags with "</>"
-modified_html_str = re.sub(r'</\w+>', '</>', str(soup))
+# Remove all ending tags
+modified_html_str = re.sub(r'</\w+>', '', str(soup))
+modified_html_str = re.sub(r'<\w+\/>', '', modified_html_str)
+
 
 print(modified_html_str)
